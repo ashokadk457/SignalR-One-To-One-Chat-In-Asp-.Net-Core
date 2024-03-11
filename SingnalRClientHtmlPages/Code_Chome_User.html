@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chrome_User</title>
+</head>
+<body>
+
+    <h1>Chrome_User</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <button type="button" onclick="SendMessage()">Send Message</button>
+    <script type="text/javascript">
+        var senderChatId = "f00c1477-14f6-4c63-b24c-ce470c8ee8e5";
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7039/ChatingHub")
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        async function start() {
+            try {
+                await connection.start();
+                console.log("SignalR Connected.");
+                await connection.invoke("SetUserChatGroup", senderChatId);
+            } catch (err) {
+                console.log(err);
+                setTimeout(start, 5000);
+            }
+        };
+
+        connection.on("ReceiveMessage", async (senderId, senderName, reciverId, message) => {
+            debugger;
+            var messageBuilder = "<div class='message-info left-side-message-box'><div class='text-mess'>" +
+                "<span>" + senderName + " " + '@DateTime.UtcNow.ToString("hh:mm tt")' + "</span><p>" + message + "</p></div></div>";
+            //$('#yourID:visible').length == 0
+            alert(messageBuilder);
+            if ($("#" + senderId + ":visible").length > 0) {
+                $("#" + senderId).append(messageBuilder);
+                await connection.invoke("SetMessageStatus", senderId, reciverId);
+            }
+            else {
+                LoadNotifcationChatListUsers();
+                var notification = "You have received a message from user " + senderName;
+                toastr.success(notification);
+            }
+        });
+
+        connection.on("ReceiveNotication", async (notification) => {
+            LoadNotification(notification)
+        });
+
+        connection.onclose(async () => {
+            await start();
+        });
+        // Start the connection.
+        start();
+        async function SendMessage() {
+            try {
+                debugger;
+                var message = "Hello How r you";
+                var reciverId = "584768a6-1df3-47b4-87e9-002f6ba7b9ca";
+                await connection.invoke("SendMessageToGroup", senderChatId, reciverId, message);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+</html>
