@@ -1,5 +1,8 @@
-How Create One To One Chat System In Asp.Net.Core Signalr Step By Step
+How to Create a One-to-One Chat System in ASP.NET Core SignalR
 
+In this guide, I'll show you how to create a one-to-one chat system using ASP.NET Core with SignalR, explained in a simple step-by-step format.
 
-This project  contains the code for creating a chat application using the ASP.NET Core API. If you're interested in learning about the code, I have explained it step by step in this post.
-https://www.quickpickdeal.com/coding/solved-make-one-to-one-chat-system-in-asp-net-core-signalr-step-by-step
+This project involves building a chat application using ASP.NET Core and SignalR for real-time communication. If you're looking for a practical way to develop this system, I’ve broken down the entire code and process into easy-to-follow steps.
+
+You can find the full code and detailed explanation in the post linked below.
+https://www.quickpickdeal.com/coding/building-a-one-to-one-chat-system-in-asp-net-core-mvc-with-signalr
